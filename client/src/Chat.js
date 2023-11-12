@@ -23,9 +23,13 @@ function Chat({ socket, username, room }) {
   };
 
   useEffect(() => {
-    socket.on("receive_message", data => {
+    const receiveMessage = data => {
       setMessageList(list => [...list, data]);
-    });
+    };
+
+    socket.on("receive_message", receiveMessage);
+
+    return () => socket.off("receive_message", receiveMessage);
   }, [socket]);
 
   return (
